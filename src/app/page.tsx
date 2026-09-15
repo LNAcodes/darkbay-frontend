@@ -1,5 +1,18 @@
 import { getAuctions } from "@/lib/auctionsService";
 
+// matches the backend AuctionResponseDto: src/auctions/dto/auction-response.dto.ts
+interface Auction {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: number;
+  currentPrice: number;
+  endDate: string;
+  createdAt: string;
+  seller: string;
+  status: string;
+}
+
 export default async function HomePage({
   searchParams,
 }: {
@@ -9,7 +22,7 @@ export default async function HomePage({
   const filters = await searchParams;
   // reading filter out of URL und sending it to backend
   const status = filters.status as string | undefined;
-  const minPrice = filters["min-price"];
+  const minPrice = filters["min-price"] as string | undefined;
   const maxPrice = filters["max-price"] as string | undefined;
   const page = filters.page as string | undefined;
 
@@ -19,7 +32,7 @@ export default async function HomePage({
     <main>
       <h1>DarkBay</h1>
       <ul>
-        {auctions.data.map((auction: any) => (
+        {auctions.data.map((auction: Auction) => (
           <li key={auction.id}>
             {auction.title}: {auction.currentPrice}€
           </li>

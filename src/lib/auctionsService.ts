@@ -38,3 +38,13 @@ export async function getAuctionById(id: string) {
 
   return response.json();
 }
+
+export async function getOffersByAuctionId(auctionId: string) {
+  const response = await fetch(`${BASE_URL}/auctions/${auctionId}/offers`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch offers for auction ${auctionId}`);
+  }
+
+  return response.json();
+}
