@@ -1,4 +1,5 @@
 import { getAuctions } from "@/lib/auctionsService";
+import Link from "next/link";
 
 // matches the backend AuctionResponseDto: src/auctions/dto/auction-response.dto.ts
 interface Auction {
@@ -34,7 +35,10 @@ export default async function HomePage({
       <ul>
         {auctions.data.map((auction: Auction) => (
           <li key={auction.id}>
-            {auction.title}: {auction.currentPrice}€
+            {/* next/link enables client-side navigation without a full page reload */}
+            <Link href={`/auctions/${auction.id}`}>
+              {auction.title}: {auction.currentPrice}€
+            </Link>
           </li>
         ))}
       </ul>

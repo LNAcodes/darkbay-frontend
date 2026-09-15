@@ -22,6 +22,7 @@ export default async function AuctionDetailPage({
   const offers = await getOffersByAuctionId(id);
 
   // if the backend returns nothing, show the Next.js not-found page
+  // notFound() is imported from "next/navigation" and triggers src/app/not-found.tsx
   if (!auction) {
     notFound();
   }
