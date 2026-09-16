@@ -1,4 +1,4 @@
-const BASE_URL = process.env.DARKBAY_API_URL;
+import { fetchAPI } from "./utils/fetchAPI";
 
 // these filter fields come from and match the backendDTO (project): src/auctions/dto/query-auctions.dto.ts
 interface AuctionQuery {
@@ -20,7 +20,7 @@ export async function getAuctions(query: AuctionQuery = {}) {
   if (query.page) params.append("page", query.page);
 
   // params.toString() turns the backpack into a query string: "status=open&page=2"
-  const response = await fetch(`${BASE_URL}/auctions?${params.toString()}`);
+  const response = await fetchAPI(`/auctions?${params.toString()}`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch auctions");
@@ -30,7 +30,7 @@ export async function getAuctions(query: AuctionQuery = {}) {
 }
 
 export async function getAuctionById(id: string) {
-  const response = await fetch(`${BASE_URL}/auctions/${id}`);
+  const response = await fetchAPI(`/auctions/${id}`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch auction with id ${id}`);
@@ -40,7 +40,7 @@ export async function getAuctionById(id: string) {
 }
 
 export async function getOffersByAuctionId(auctionId: string) {
-  const response = await fetch(`${BASE_URL}/auctions/${auctionId}/offers`);
+  const response = await fetchAPI(`/auctions/${auctionId}/offers`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch offers for auction ${auctionId}`);
