@@ -5,8 +5,8 @@
 
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export async function loginAction(formData: FormData) {
   // FormData comes from the login form — Next.js passes it automatically
@@ -40,4 +40,32 @@ export async function loginAction(formData: FormData) {
   });
 
   redirect("/");
+}
+
+export async function registerAction(formData: FormData) {
+  // FormData comes from the register form — Next.js passes it automatically
+  const username = formData.get("username") as string;
+  const password = formData.get("password") as string;
+
+  // 1. send POST /aut/register to the DarkBay backend
+  const response = await fetch(`${process.env.DARKBAY_API_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Registration failed");
+  }
+
+  // 2. after successful registration, redirect to login page, the user need to login separately to get a token
+
+  redirect("/auth/login");
+}
+
+export async function logoutAction() {
+  // delete the token cookie — this effectively logs the user out
+  const cookieStore = await cookies();
+  cookieStore.delete("token");
+  redirect("/auth/login");
 }
